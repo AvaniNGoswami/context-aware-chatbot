@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+myvenvchat/
+.env.*
+alembic/versions/__pycache__/

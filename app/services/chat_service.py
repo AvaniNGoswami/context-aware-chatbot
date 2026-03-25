@@ -5,9 +5,25 @@ from app.models.session import Session
 import uuid
 from app.models.distress_tracker import DistressTracker
 from app.models.distress_tracker import DistressTracker
+from dotenv import load_dotenv
+load_dotenv()
 
-SESSION_MESSAGE_LIMIT = 20
-SESSION_TIMEOUT_MIN = 30
+import os
+from twilio.rest import Client
+
+print("🔥SID:", os.getenv("TWILIO_ACCOUNT_SID"))
+print("🔥TOKEN:", os.getenv("TWILIO_AUTH_TOKEN"))
+print("🔥PHONE:", os.getenv("TWILIO_PHONE_NUMBER"))
+
+client = Client(
+    os.getenv("TWILIO_ACCOUNT_SID"),
+    os.getenv("TWILIO_AUTH_TOKEN")
+)
+
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+
+SESSION_MESSAGE_LIMIT = 1
+SESSION_TIMEOUT_MIN = 1
 
 GROQ_API = os.getenv("GROQ_API_KEY")
 
@@ -167,11 +183,39 @@ def update_distress_streak(db, user_id, session):
     return tracker.streak_count
 def send_sms(user):
     print(f" 🔥🔥🔥🔥🔥🔥🔥🔥[ALERT] SMS sent to {user.emergency_contact_phone}")
+    # try:
+    #     message = client.messages.create(
+    #         body="⚠️ Alert: The user is showing signs of emotional distress. Please check on them.",
+    #         from_=TWILIO_PHONE_NUMBER,
+    #         to=user.emergency_contact_phone
+    #     )
+
+    #     print(f"[SMS SENT] SID: {message.sid}")
+
+    # except Exception as e:
+    #     print(f"[SMS ERROR] {str(e)}")
 
 
 def make_call(user):
     print(f" 🔥🔥🔥🔥🔥🔥🔥🔥[ALERT] Calling {user.emergency_contact_phone}")
+    # try:
+    #     call = client.calls.create(
+    #         twiml="""
+    #             <Response>
+    #                 <Say voice="alice">
+    #                     Alert. The user may need emotional support. Please reach out to them immediately.
+    #                 </Say>
+    #             </Response>
+    #         """,
+    #         from_=TWILIO_PHONE_NUMBER,
+    #         to=user.emergency_contact_phone
+    #     )
 
+    #     print(f"[CALL INITIATED] SID: {call.sid}")
+
+    # except Exception as e:
+    #     print(f"[CALL ERROR] {str(e)}")
+    
 def handle_alerts(user, streak_count):
 
     if not user.consent_for_alerts:

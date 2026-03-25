@@ -10,8 +10,8 @@ class Users(Base):
     email = Column(String)
     password = Column(String)
     emergency_contact_name = Column(String)
-    emergency_contact_phone = Column(String)   # FIXED
-    user_phone = Column(String)                # FIXED
+    emergency_contact_phone = Column(String)   
+    user_phone = Column(String)                
     consent_for_alerts = Column(Boolean, default=False)
 
     created_at = Column(DateTime)

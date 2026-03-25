@@ -6,17 +6,6 @@ from uuid import uuid4
 from datetime import datetime
 from app.models.users import Users
 
-# name = Column(String)
-#     role = Column(String)
-#     email = Column(String)
-#     password = Column(String)
-#     emergency_contact_name = Column(String)
-#     emergency_contact_phone = Column(String)   # FIXED
-#     user_phone = Column(String)                # FIXED
-#     consent_for_alerts = Column(Boolean, default=False)
-
-#     created_at = Column(DateTime)
-
 class register(BaseModel):
     name:str
     role:str

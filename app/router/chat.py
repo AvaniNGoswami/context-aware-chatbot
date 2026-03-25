@@ -33,68 +33,6 @@ from app.services.chat_service import (
     handle_alerts
 )
 
-# @router.post("/chat")
-# def chat(req: ChatRequest, db: Session = Depends(get_db)):
-
-#     # 🔹 1. Get user
-#     user = get_user(db, req.user_id)
-#     if not user:
-#         return {"error": "user not found"}
-
-#     # 🔹 2. SESSION (🔥 CORE FIX)
-#     session = get_or_create_session(db, req.user_id)
-
-#     # 🔹 3. Emotion detection
-#     emotion = detect_emotion(req.message)
-
-#     # 🔹 4. Update session
-#     update_session(session, emotion, db)
-
-#     # 🔹 5. Update streak (ONLY when session completes)
-#     streak = update_distress_streak(db, req.user_id, session)
-
-#     # 🔹 6. Trigger alerts
-#     if streak:
-#         handle_alerts(user, streak)
-
-#     # 🔹 7. Role prompt
-#     role_prompt = ROLE_PROMPTS.get(user.role, ROLE_PROMPTS["default"])
-
-#     # 🔹 8. Generate response
-#     reply = generate_response(
-#         req.message,
-#         role_prompt,
-#         emotion
-#     )
-
-#     # 🔹 9. Save chat (YOU MUST UPDATE THIS FUNCTION)
-#     save_chat(
-#         db,
-#         user_id=req.user_id,
-#         session_id=session.id,
-#         user_message=req.message,
-#         emotion=emotion,
-#         bot_response=reply
-#     )
-
-#     return {
-#         "emotion": emotion,
-#         "response": reply,
-#         "session_id": session.id,
-#         "streak": streak
-#     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 @router.post("/chat")
 def chat(req: ChatRequest, db: Session = Depends(get_db)):

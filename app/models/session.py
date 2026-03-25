@@ -36,8 +36,8 @@ class Session(Base):
     message_count = Column(Integer, default=0)
     distress_flag = Column(Boolean, default=False)
 
-    # 🔥 NEW FIELD
-    # conversation = Column(JSONB, default=list)
     conversation = Column(MutableList.as_mutable(JSONB), default=list)
+    distress_message_count = Column(Integer, default=0)
+    total_message_count = Column(Integer, default=0)
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

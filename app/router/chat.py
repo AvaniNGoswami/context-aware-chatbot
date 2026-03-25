@@ -37,40 +37,31 @@ from app.services.chat_service import (
 @router.post("/chat")
 def chat(req: ChatRequest, db: Session = Depends(get_db)):
 
-    # 🔹 1. Get user
     user = get_user(db, req.user_id)
     if not user:
         return {"error": "user not found"}
 
-    # 🔹 2. Session
     session = get_or_create_session(db, req.user_id)
 
-    # 🔹 3. Role prompt (🔥 MOVE THIS UP)
     role_prompt = ROLE_PROMPTS.get(user.role, ROLE_PROMPTS["default"])
 
-    # 🔹 4. Emotion
     emotion = detect_emotion(req.message)
 
-    # 🔹 5. Generate response (ONLY ONCE)
     reply = generate_response(
         req.message,
         role_prompt,
         emotion,
-        session   # 🔥 don’t forget this
+        session   
     )
 
-    # 🔹 6. Update session
     update_session(session, emotion, req.message, reply, db)
     print("SESSION JSON:", session.conversation)
 
-    # 🔹 7. Update streak
     streak = update_distress_streak(db, req.user_id, session)
 
-    # 🔹 8. Alerts
     if streak:
         handle_alerts(user, streak)
 
-    # 🔹 9. Save chat
     save_chat(
         db,
         user_id=req.user_id,

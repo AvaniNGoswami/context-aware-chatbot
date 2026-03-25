@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.router import register, sentiment, chat
+from app.router import register, chat
 
 
 app = FastAPI(title='welcome to context aware chatbot')
@@ -9,5 +9,4 @@ def health_check():
     return {'msg':'welcome to context aware chatbot'}
 
 app.include_router(register.router)
-# app.include_router(sentiment.router)
 app.include_router(chat.router)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column,String,DateTime
+from sqlalchemy import Column,String,DateTime, Integer, Boolean
 from app.db.base import Base
 from datetime import datetime
 
@@ -9,4 +9,9 @@ class Users(Base):
     role = Column(String)
     email = Column(String)
     password = Column(String)
+    emergency_contact_name = Column(String)
+    emergency_contact_phone = Column(String)   # FIXED
+    user_phone = Column(String)                # FIXED
+    consent_for_alerts = Column(Boolean, default=False)
+
     created_at = Column(DateTime)

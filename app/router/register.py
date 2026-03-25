@@ -6,11 +6,29 @@ from uuid import uuid4
 from datetime import datetime
 from app.models.users import Users
 
+# name = Column(String)
+#     role = Column(String)
+#     email = Column(String)
+#     password = Column(String)
+#     emergency_contact_name = Column(String)
+#     emergency_contact_phone = Column(String)   # FIXED
+#     user_phone = Column(String)                # FIXED
+#     consent_for_alerts = Column(Boolean, default=False)
+
+#     created_at = Column(DateTime)
+
 class register(BaseModel):
     name:str
     role:str
     email:str
     password:str
+    emergency_contact_name : str
+    emergency_contact_phone : str
+    user_phone : str
+    consent_for_alerts : str
+
+
+
 
 router = APIRouter(prefix='/register',tags=['Register'])
 
@@ -23,7 +41,12 @@ def registration(data:register):
             role = data.role,
             email = data.email,
             password = data.password,
-            created_at = datetime.utcnow()
+            created_at = datetime.utcnow(),
+            emergency_contact_name = data.emergency_contact_name,
+            emergency_contact_phone = data.emergency_contact_phone,
+            user_phone = data.user_phone,
+            consent_for_alerts = data.consent_for_alerts
+
         )
         session.add(user)
         session.commit()

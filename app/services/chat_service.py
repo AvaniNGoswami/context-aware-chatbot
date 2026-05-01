@@ -22,8 +22,8 @@ client = Client(
 
 TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 
-SESSION_MESSAGE_LIMIT = 1
-SESSION_TIMEOUT_MIN = 1
+SESSION_MESSAGE_LIMIT = 20
+SESSION_TIMEOUT_MIN = 30
 
 GROQ_API = os.getenv("GROQ_API_KEY")
 
@@ -120,7 +120,7 @@ def update_session(session, emotion, user_message, bot_response, db):
     session.message_count += 1
     session.total_message_count += 1
 
-    if emotion in ["depressed", "disturbed"]:
+    if emotion in ["depressed", "disturbed","sad"]:
         session.distress_message_count += 1
 
     if session.conversation is None:
@@ -197,25 +197,25 @@ def send_sms(user):
 
 
 def make_call(user):
-    print(f" 🔥🔥🔥🔥🔥🔥🔥🔥[ALERT] Calling {user.emergency_contact_phone}")
-    # try:
-    #     call = client.calls.create(
-    #         twiml="""
-    #             <Response>
-    #                 <Say voice="alice">
-    #                     Alert. The user may need emotional support. Please reach out to them immediately.
-    #                 </Say>
-    #             </Response>
-    #         """,
-    #         from_=TWILIO_PHONE_NUMBER,
-    #         to=user.emergency_contact_phone
-    #     )
+    # print(f" 🔥🔥🔥🔥🔥🔥🔥🔥[ALERT] Calling {user.emergency_contact_phone}")
+    try:
+        call = client.calls.create(
+            twiml="""
+                <Response>
+                    <Say voice="alice">
+                        Alert. The user may need emotional support. Please reach out to them immediately.
+                    </Say>
+                </Response>
+            """,
+            from_=TWILIO_PHONE_NUMBER,
+            to=user.emergency_contact_phone
+        )
 
-    #     print(f"[CALL INITIATED] SID: {call.sid}")
+        print(f"[CALL INITIATED] SID: {call.sid}")
 
-    # except Exception as e:
-    #     print(f"[CALL ERROR] {str(e)}")
-    
+    except Exception as e:
+        print(f"[CALL ERROR] {str(e)}")
+
 def handle_alerts(user, streak_count):
 
     if not user.consent_for_alerts:
